@@ -1,4 +1,6 @@
-// verbatim from https://www.pwabuilder.com/serviceworker
+// modified from https://www.pwabuilder.com/serviceworker
+// StaleWhileRevalidate strategy
+// bigger maxEntries
 //This is the service worker with the Advanced caching
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.0.0/workbox-sw.js');
@@ -17,11 +19,11 @@ self.addEventListener("message", (event) => {
 
 workbox.routing.registerRoute(
     ({ event }) => event.request.destination === 'document',
-    new workbox.strategies.NetworkFirst({
+    new workbox.strategies.StaleWhileRevalidate({
         cacheName: HTML_CACHE,
         plugins: [
             new workbox.expiration.ExpirationPlugin({
-                maxEntries: 10,
+                maxEntries: 20,
             }),
         ],
     })
@@ -33,7 +35,7 @@ workbox.routing.registerRoute(
         cacheName: JS_CACHE,
         plugins: [
             new workbox.expiration.ExpirationPlugin({
-                maxEntries: 15,
+                maxEntries: 100,
             }),
         ],
     })
@@ -45,7 +47,7 @@ workbox.routing.registerRoute(
         cacheName: STYLE_CACHE,
         plugins: [
             new workbox.expiration.ExpirationPlugin({
-                maxEntries: 15,
+                maxEntries: 100,
             }),
         ],
     })
@@ -57,7 +59,7 @@ workbox.routing.registerRoute(
         cacheName: IMAGE_CACHE,
         plugins: [
             new workbox.expiration.ExpirationPlugin({
-                maxEntries: 15,
+                maxEntries: 100,
             }),
         ],
     })
